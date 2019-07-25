@@ -397,8 +397,8 @@ class PreTrainedModel(nn.Module):
         cache_dir = kwargs.pop('cache_dir', None)
         from_tf = kwargs.pop('from_tf', False)
         output_loading_info = kwargs.pop('output_loading_info', False)
-        pop_classifier_layer = kwargs.get('pop_classifier_layer', False)
-        kwargs.pop('pop_classifier_layer', None)
+        pop_layer = kwargs.get('pop_layer', False)
+        kwargs.pop('pop_layer', None)
 
         # Load config
         if config is None:
@@ -458,11 +458,11 @@ class PreTrainedModel(nn.Module):
             return cls.load_tf_weights(model, config, resolved_archive_file[:-6])  # Remove the '.index'
 
         # pop_classifier_layer
-        if pop_classifier_layer:
+        if pop_layer:
             print(state_dict.keys())
             state_dict_keys = list(state_dict.keys())
             for key in state_dict_keys:
-                if key.startswith("classifier"):
+                if key.startswith(pop_layer):
                     print("pop", key)
                     state_dict.pop(key)
 
